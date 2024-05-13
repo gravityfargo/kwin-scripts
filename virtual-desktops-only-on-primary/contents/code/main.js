@@ -32,8 +32,8 @@ function bindUpdate(window) {
 }
 
 function main() {
-    workspace.clientList().forEach(bind);
-    workspace.clientList().forEach(update);
+    workspace.windowList().forEach(bind);
+    workspace.windowList().forEach(update);
     workspace.clientAdded.connect(bindUpdate);
 }
 
