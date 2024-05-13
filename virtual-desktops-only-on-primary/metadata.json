@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "gravityfargo@gmail.com",
+                "Name": "Nathan Price"
+            }
+        ],
+        "Description": "Switchable virtual desktops only on the primary monitor",
+        "Icon": "preferences-system-windows-script-test",
+        "Id": "virtual-desktops-only-on-primary",
+        "License": "GPL",
+        "Name": "virtual-desktops-only-on-primary",
+        "ServiceTypes": [
+            "KWin/Script"
+        ]
+    },
+    "X-KDE-ConfigModule": "kcm_kwin4_genericscripted",
+    "X-KWin-Border-Activate": "true",
+    "X-Plasma-API": "javascript"
+}
