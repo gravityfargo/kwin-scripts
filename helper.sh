@@ -1,66 +1,36 @@
 #!/bin/bash
 
-printUsage() {
-    echo "Usage: helper.sh install|uninstall|upgrade|package name-of-the-script"
-    echo "   or: helper.sh show-dev-console"
-}
+if [ "$1" == "install" ]; then
+    echo "Installing $2..."
+    kpackagetool6 --type=KWin/Script -i "$2/"
+fi
 
-install() {
-    local scriptName=$1
-    kpackagetool5 -i "$scriptName"
-}
+if [ "$1" == "upgrade" ]; then
+    echo "Upgrading $2..."
+    kpackagetool6 --type=KWin/Script -u "$2/"
+fi
 
-uninstall() {
-    local scriptName=$1
-    kpackagetool5 -r "$scriptName"
-}
 
-upgrade() {
-    local scriptName=$1
-    kpackagetool5 -u "$scriptName"
-}
+if [ "$1" == "uninstall" ]; then
+    echo "Uninstalling $2..."
+    kpackagetool6 -r "$2/"
+fi
 
-package() {
-    local scriptName=$1
+if [ "$1" == "devconsole" ]; then
+    echo "Uninstalling $2..."
+    kpackagetool6 -r "$2/"
+fi
 
-    [[ ! -d "$scriptName" ]] && {
-        echo "No such script '$scriptName'"
-        exit 1
-    }
+if [ "$1" == "enable" ]; then
+    echo "Upgrading $2..."
+    kwriteconfig6 --file kwinrc --group Plugins --key "$2"Enabled true
+    qdbus org.kde.KWin /KWin reconfigure
+fi
 
-    cd "$scriptName" || exit 1
+if [ "$1" == "reconfigure" ]; then
+    qdbus org.kde.KWin /KWin reconfigure
+fi
 
-    local scriptVersion=$(grep -Po "Version=\K(.*)" metadata.desktop)
-    zip -r "$scriptName-$scriptVersion.kwinscript" contents metadata.desktop
-
-    cd ..
-}
-
-show-dev-console() {
-    qdbus org.kde.plasmashell /PlasmaShell showInteractiveKWinConsole
-}
-
-main() {
-    local command=$1
-
-    case $command in
-        install|uninstall|upgrade|package)
-            [[ -z "$2" ]] && {
-                printUsage
-                exit 1
-            }
-            $command "$2"
-            ;;
-
-        show-dev-console)
-            $command
-            ;;
-
-        *)
-            printUsage
-            exit 1
-            ;;
-    esac
-}
-
-main $*
+if [ "$1" == "reconfigure" ]; then
+    qdbus org.kde.KWin /KWin reconfigure
+fi
